@@ -1,9 +1,56 @@
 package com.portfolio.shopsphere;
-import org.springframework.boot.CommandLineRunner;import org.springframework.context.annotation.Bean;import org.springframework.context.annotation.Configuration;
-@Configuration class DataSeeder {
- @Bean CommandLineRunner seed(ProductRepository repo){return args->{if(repo.count()==0){
-  Product a=new Product();a.setName("Everyday Backpack");a.setDescription("A practical daily backpack with a clean minimal profile.");a.setCategory("Accessories");a.setPrice(1299);a.setStock(20);repo.save(a);
-  Product b=new Product();b.setName("Ceramic Coffee Mug");b.setDescription("A sturdy ceramic mug for your daily coffee ritual.");b.setCategory("Home");b.setPrice(349);b.setStock(35);repo.save(b);
-  Product c=new Product();c.setName("Desk Organizer");c.setDescription("Keep your workspace tidy with this compact organizer.");c.setCategory("Workspace");c.setPrice(599);c.setStock(15);repo.save(c);
- }};}
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.math.BigDecimal;
+
+@Configuration
+class DataSeeder {
+
+    @Bean
+    CommandLineRunner seed(ProductRepository repository) {
+        return args -> {
+            if (repository.count() == 0) {
+                repository.save(product(
+                        "Everyday Backpack",
+                        "A practical daily backpack with a clean minimal profile.",
+                        "Accessories",
+                        "1299.00",
+                        20
+                ));
+                repository.save(product(
+                        "Ceramic Coffee Mug",
+                        "A sturdy ceramic mug for your daily coffee ritual.",
+                        "Home",
+                        "349.00",
+                        35
+                ));
+                repository.save(product(
+                        "Desk Organizer",
+                        "Keep your workspace tidy with this compact organizer.",
+                        "Workspace",
+                        "599.00",
+                        15
+                ));
+            }
+        };
+    }
+
+    private Product product(
+            String name,
+            String description,
+            String category,
+            String price,
+            int stock
+    ) {
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setCategory(category);
+        product.setPrice(new BigDecimal(price));
+        product.setStock(stock);
+        return product;
+    }
 }
