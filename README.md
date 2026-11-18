@@ -39,6 +39,14 @@ Spring Boot REST API
  PostgreSQL
 ```
 
+## Screenshots
+
+### Storefront
+![ShopSphere Storefront](screenshots/storefront.jpeg)
+
+### Admin Panel
+![ShopSphere Admin Panel](screenshots/admin.jpeg)
+
 ## Run Locally with Docker
 
 ### Prerequisites
@@ -76,6 +84,7 @@ This keeps the database volume. Use `docker compose down -v` only if you intenti
 shopsphere-springboot-react/
 ├── backend/          # Spring Boot application and REST API
 ├── frontend/         # React + Vite user interface
+├── screenshots/      # Application screenshots
 ├── docker-compose.yml
 ├── .gitignore
 └── README.md
