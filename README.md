@@ -1,60 +1,28 @@
-# ShopSphere — E-commerce Application
+# ShopSphere
 
-A full-stack e-commerce demo built with **React**, **Spring Boot**, and **PostgreSQL**. It includes a product catalogue, product administration, a shopping cart, and a demo order workflow.
-
-> **Note:** Checkout is a demonstration flow. It does not process real payments.
+ShopSphere is a small e-commerce demo built with React and Spring Boot. I made it to practise product management, shopping cart logic, and placing orders through a REST API.
 
 ## Features
 
-- Browse and search the product catalogue
-- Admin product create, read, update, and delete operations
+- View and search products
 - Add products to a shopping cart
-- Create demo orders through checkout
-- Validate product stock during order creation
-- View created orders
+- Place a demo order
+- Check product stock before an order is placed
+- Add, edit and remove products from the admin view
+- View orders placed through the demo
 
-## Technology Stack
+## Tech used
 
-| Layer | Technology |
-|---|---|
-| Frontend | React, Vite |
-| Backend | Java 21, Spring Boot 3.4.5 |
-| API | Spring Boot REST |
-| Database | PostgreSQL |
-| Containerization | Docker, Docker Compose |
+- Java 21
+- Spring Boot
+- React and Vite
+- Spring Data JPA
+- PostgreSQL
+- Docker Compose
 
-## Architecture
+## Run the project
 
-```text
-React + Vite
-     |
-     | HTTP / REST
-     v
-Spring Boot REST API
-     |
-     | JPA
-     v
-PostgreSQL
-```
-
-## Screenshots
-
-### Storefront
-
-![ShopSphere Storefront](screenshots/storefront.jpeg)
-
-### Admin Panel
-
-![ShopSphere Admin Panel](screenshots/admin.jpeg)
-
-## Run Locally with Docker
-
-### Prerequisites
-
-- Docker Desktop
-- Git
-
-### Start the application
+You need Git and Docker installed.
 
 ```bash
 git clone https://github.com/codewithsayan7/shopsphere-springboot-react.git
@@ -62,58 +30,37 @@ cd shopsphere-springboot-react
 docker compose up --build
 ```
 
-### Access the application
+Then open:
 
-| Service | URL |
-|---|---|
-| React frontend | http://localhost:5174 |
-| Backend API | http://localhost:8081 |
-| Products API | http://localhost:8081/api/products |
+- Storefront: http://localhost:5174
+- Backend: http://localhost:8081
+- Products API: http://localhost:8081/api/products
+- Orders API: http://localhost:8081/api/orders
 
-To stop the services:
+To stop the containers:
 
 ```bash
 docker compose down
 ```
 
-This keeps the database volume. Use `docker compose down -v` only if you intentionally want to remove persisted database data.
+## Project folders
 
-## Project Structure
+- `backend/` – Spring Boot API and tests
+- `frontend/` – React storefront and admin page
+- `screenshots/` – screenshots
 
-```text
-shopsphere-springboot-react/
-├── backend/
-├── frontend/
-├── screenshots/
-├── docker-compose.yml
-├── .gitignore
-└── README.md
-```
+## Screenshots
 
-## What This Project Demonstrates
+### Storefront
 
-- Designing REST API-backed application workflows
-- Implementing product management operations
-- Building cart and order flows
-- Validating inventory during checkout
-- Connecting Spring Boot to PostgreSQL
-- Developing a React frontend
-- Containerizing services with Docker Compose
+![ShopSphere storefront](screenshots/storefront.jpeg)
 
-## Important Scope
+### Admin page
 
-This is a portfolio/demo application. The checkout flow creates demo orders and validates stock; it is not connected to a payment gateway.
+![ShopSphere admin](screenshots/admin.jpeg)
 
-## Future Improvements
-
-- User authentication and role-based authorization
-- Persistent user-specific carts
-- Payment gateway integration
-- Automated backend and frontend tests
-- Production deployment and CI/CD
+This is a demo project. Checkout does not collect payments, and the admin page does not have production login protection.
 
 ## Author
 
-**Sayan Banerjee**
-
-GitHub: [@codewithsayan7](https://github.com/codewithsayan7)
+Sayan Banerjee – https://github.com/codewithsayan7
