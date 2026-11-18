@@ -1,9 +1,11 @@
 package com.portfolio.shopsphere;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -43,14 +45,12 @@ public class ShopService {
 
     public Product update(Long id, Product updatedProduct) {
         Product existingProduct = findProduct(id);
-
         existingProduct.setName(updatedProduct.getName());
         existingProduct.setDescription(updatedProduct.getDescription());
         existingProduct.setCategory(updatedProduct.getCategory());
         existingProduct.setPrice(updatedProduct.getPrice());
         existingProduct.setStock(updatedProduct.getStock());
         existingProduct.setImageUrl(updatedProduct.getImageUrl());
-
         return productRepository.save(existingProduct);
     }
 
@@ -74,14 +74,15 @@ public class ShopService {
         Object rawItems = orderRequest.get("items");
         if (customerName.isEmpty()
                 || customerEmail.isEmpty()
+                || !customerEmail.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
                 || !(rawItems instanceof List<?> items)
                 || items.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Name, email and at least one cart item are required."
+                    "Enter a valid name and email, and add at least one cart item."
             );
         }
 
-        double orderTotal = 0;
+        BigDecimal orderTotal = BigDecimal.ZERO;
 
         for (Object rawItem : items) {
             if (!(rawItem instanceof Map<?, ?> item)) {
@@ -90,24 +91,32 @@ public class ShopService {
 
             Long productId;
             int quantity;
-
             try {
                 productId = Long.valueOf(String.valueOf(item.get("productId")));
                 quantity = Integer.parseInt(String.valueOf(item.get("quantity")));
-            } catch (NumberFormatException exception) {
-                throw new IllegalArgumentException("Each item needs a valid product ID and quantity.");
+            } catch (RuntimeException exception) {
+                throw new IllegalArgumentException(
+                        "Each item needs a valid product ID and quantity."
+                );
             }
 
-            Product product = findProduct(productId);
-            if (quantity < 1 || product.getStock() < quantity) {
+            if (quantity < 1) {
+                throw new IllegalArgumentException("Item quantity must be at least one.");
+            }
+
+            Product product = productRepository.findByIdForUpdate(productId)
+                    .orElseThrow(() -> new NoSuchElementException("Product not found: " + productId));
+
+            if (product.getStock() < quantity) {
                 throw new IllegalArgumentException(
                         "There is not enough stock for " + product.getName() + "."
                 );
             }
 
             product.setStock(product.getStock() - quantity);
-            productRepository.save(product);
-            orderTotal += product.getPrice() * quantity;
+            orderTotal = orderTotal.add(
+                    product.getPrice().multiply(BigDecimal.valueOf(quantity))
+            );
         }
 
         try {
@@ -115,7 +124,7 @@ public class ShopService {
             return orderRepository.save(
                     new OrderRecord(customerName, customerEmail, itemsJson, orderTotal)
             );
-        } catch (Exception exception) {
+        } catch (JsonProcessingException exception) {
             throw new IllegalStateException("The order could not be created.", exception);
         }
     }
