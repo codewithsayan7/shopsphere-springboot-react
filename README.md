@@ -23,11 +23,17 @@ ShopSphere is a small e-commerce demo built with React and Spring Boot. I made i
 
 ## Run the project
 
-You need Git and Docker installed. The local demo admin credentials are `admin` / `change-this-demo-password`. Change them before sharing or deploying the project. You can override them with `ADMIN_USERNAME` and `ADMIN_PASSWORD` environment variables.
+You need Git and Docker installed. Create a local environment file and set a strong admin password before starting the containers:
 
 ```bash
 git clone https://github.com/codewithsayan7/shopsphere-springboot-react.git
 cd shopsphere-springboot-react
+cp .env.example .env
+```
+
+Edit the `.env` file and replace the example password. Then run:
+
+```bash
 docker compose up --build
 ```
 
@@ -46,7 +52,7 @@ docker compose down
 
 ## Admin access
 
-Product browsing and demo checkout are public. Product creation, editing, deletion and order viewing require the admin username and password configured through environment variables. The demo credentials are only for local practice; use a strong secret and HTTPS for any hosted environment.
+Product browsing and demo checkout are public. Product creation, editing, deletion and order viewing require the admin username and password configured in `.env`. The example file is only a starting point; use a strong secret and HTTPS for any hosted environment.
 
 Order totals use `BigDecimal`, and checkout locks product rows while checking and reducing stock to prevent two orders from overselling the same available quantity.
 
@@ -66,7 +72,7 @@ Order totals use `BigDecimal`, and checkout locks product rows while checking an
 
 ![ShopSphere admin](screenshots/admin.jpeg)
 
-This is a demo project. Checkout does not collect payments, and the admin page does not have production login protection.
+This is a learning demo. It does not collect payments or include production-grade identity management, role management or deployment hardening.
 
 ## Author
 
