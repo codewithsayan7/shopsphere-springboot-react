@@ -25,8 +25,6 @@ A full-stack e-commerce demo built with **React**, **Spring Boot**, and **Postgr
 
 ## Architecture
 
-The React frontend sends HTTP requests to the Spring Boot REST API. The backend manages catalogue and order operations and stores application data in PostgreSQL.
-
 ```text
 React + Vite
      |
@@ -36,15 +34,17 @@ Spring Boot REST API
      |
      | JPA
      v
- PostgreSQL
+PostgreSQL
 ```
 
 ## Screenshots
 
 ### Storefront
+
 ![ShopSphere Storefront](screenshots/storefront.jpeg)
 
 ### Admin Panel
+
 ![ShopSphere Admin Panel](screenshots/admin.jpeg)
 
 ## Run Locally with Docker
@@ -82,9 +82,9 @@ This keeps the database volume. Use `docker compose down -v` only if you intenti
 
 ```text
 shopsphere-springboot-react/
-├── backend/          # Spring Boot application and REST API
-├── frontend/         # React + Vite user interface
-├── screenshots/      # Application screenshots
+├── backend/
+├── frontend/
+├── screenshots/
 ├── docker-compose.yml
 ├── .gitignore
 └── README.md
