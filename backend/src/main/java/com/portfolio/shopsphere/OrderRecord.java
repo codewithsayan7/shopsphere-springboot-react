@@ -1,11 +1,13 @@
 package com.portfolio.shopsphere;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -18,15 +20,25 @@ public class OrderRecord {
 
     private String customerName;
     private String customerEmail;
+
+    @Column(length = 10000)
     private String itemsJson;
-    private double total;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal total;
+
     private String status = "PLACED";
     private Instant createdAt = Instant.now();
 
     public OrderRecord() {
     }
 
-    public OrderRecord(String customerName, String customerEmail, String itemsJson, double total) {
+    public OrderRecord(
+            String customerName,
+            String customerEmail,
+            String itemsJson,
+            BigDecimal total
+    ) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.itemsJson = itemsJson;
@@ -49,7 +61,7 @@ public class OrderRecord {
         return itemsJson;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
