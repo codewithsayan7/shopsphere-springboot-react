@@ -23,6 +23,9 @@ export default function App() {
   const [form, setForm] = useState(emptyProduct);
   const [editingId, setEditingId] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminUsername, setAdminUsername] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminAuthorized, setAdminAuthorized] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [orders, setOrders] = useState([]);
@@ -31,6 +34,33 @@ export default function App() {
   const [checkingOut, setCheckingOut] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  function adminHeaders() {
+    return { Authorization: `Basic ${window.btoa(`${adminUsername}:${adminPassword}`)}` };
+  }
+
+  async function loginAdmin(event) {
+    event.preventDefault();
+    setError('');
+    try {
+      const response = await fetch(`${API}/orders`, { headers: adminHeaders() });
+      if (!response.ok) throw new Error('Sign-in failed. Check the admin username and password.');
+      setOrders(await response.json());
+      setAdminAuthorized(true);
+      setMessage('Signed in to the admin area.');
+    } catch (requestError) {
+      setAdminAuthorized(false);
+      setError(requestError.message || 'Could not sign in.');
+    }
+  }
+
+  function logoutAdmin() {
+    setAdminAuthorized(false);
+    setAdminUsername('');
+    setAdminPassword('');
+    setOrders([]);
+    setMessage('You have signed out.');
+  }
 
   async function loadProducts(search = query) {
     setLoading(true);
@@ -95,7 +125,7 @@ export default function App() {
         editing ? `${API}/products/${editingId}` : `${API}/products`,
         {
           method: editing ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { ...adminHeaders(), 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...form,
             price: Number(form.price),
@@ -157,7 +187,7 @@ export default function App() {
   async function showOrders() {
     setError('');
     try {
-      const response = await fetch(`${API}/orders`);
+      const response = await fetch(`${API}/orders`, { headers: adminHeaders() });
       if (!response.ok) throw new Error('Could not load orders.');
       setOrders(await response.json());
     } catch (requestError) {
@@ -171,7 +201,7 @@ export default function App() {
     setError('');
     setMessage('');
     try {
-      const response = await fetch(`${API}/products/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API}/products/${id}`, { method: 'DELETE', headers: adminHeaders() });
       if (!response.ok) throw new Error('The product could not be removed.');
       setMessage('Product removed from the catalogue.');
       await loadProducts();
@@ -291,9 +321,35 @@ export default function App() {
         </>
       ) : (
         <section className="admin">
+          {!adminAuthorized ? (
+            <form className="adminform" onSubmit={loginAdmin}>
+              <h2>Admin sign in</h2>
+              <p>Use the admin credentials configured for this project.</p>
+              <input
+                required
+                autoComplete="username"
+                placeholder="Admin username"
+                value={adminUsername}
+                onChange={event => setAdminUsername(event.target.value)}
+              />
+              <input
+                required
+                type="password"
+                autoComplete="current-password"
+                placeholder="Admin password"
+                value={adminPassword}
+                onChange={event => setAdminPassword(event.target.value)}
+              />
+              <button>Sign in</button>
+            </form>
+          ) : (
+            <>
           <div className="tools">
             <h2>Manage products</h2>
-            <button className="outline" onClick={showOrders}>Load orders</button>
+            <div>
+              <button className="outline" onClick={showOrders}>Load orders</button>
+              <button className="outline" onClick={logoutAdmin}>Sign out</button>
+            </div>
           </div>
 
           <form className="adminform" onSubmit={saveProduct}>
@@ -329,6 +385,8 @@ export default function App() {
                   Order #{order.id} · {order.customerName} · ₹{Number(order.total).toFixed(2)} · {order.status}
                 </p>
               ))}
+            </>
+          )}
             </>
           )}
         </section>
