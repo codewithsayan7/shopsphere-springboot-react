@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    environment: { POSTGRES_DB: shopsphere, POSTGRES_USER: app, POSTGRES_PASSWORD: app }
+    ports: ["5433:5432"]
+    volumes: [shopsphere_data:/var/lib/postgresql/data]
+  backend:
+    build: ./backend
+    environment: { DB_URL: jdbc:postgresql://db:5432/shopsphere, DB_USER: app, DB_PASSWORD: app }
+    ports: ["8081:8080"]
+    depends_on: [db]
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    volumes: ["./frontend:/app"]
+    command: sh -c "npm install && npm run dev"
+    ports: ["5174:5173"]
+    depends_on: [backend]
+volumes:
+  shopsphere_data:
