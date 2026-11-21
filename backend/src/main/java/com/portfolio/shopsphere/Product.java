@@ -1,4 +1,4 @@
-package com.portfolio.shopsphere;
+package com.sayan.shopsphere;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
