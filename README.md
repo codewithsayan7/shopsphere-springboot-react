@@ -1,29 +1,26 @@
 # ShopSphere
 
-ShopSphere is a small e-commerce demo built with React and Spring Boot. I made it to practise product management, shopping cart logic, and placing orders through a REST API.
+A small e-commerce application with a React storefront and a Spring Boot API. The project covers product maintenance, a cart, checkout, and an admin-only order view.
 
-## Features
+## What it does
 
-- View and search products
-- Add products to a shopping cart
-- Place a demo order
-- Check and lock product stock while an order is placed
-- Add, edit and remove products from the admin view
-- View orders placed through the demo
+- Lists products and supports name/category search
+- Adds products to a cart and submits an order
+- Provides admin endpoints for creating, editing, and removing products
+- Shows orders to authenticated administrators
+- Checks available stock during checkout
 
-## Tech used
+## Stack
 
-- Java 21
-- Spring Boot
-- React and Vite
-- Spring Data JPA
-- Spring Security (HTTP Basic admin access)
-- PostgreSQL
+- Java 21 and Spring Boot
+- Spring Data JPA and PostgreSQL
+- React, Vite, and CSS
+- Spring Security with HTTP Basic authentication for admin routes
 - Docker Compose
 
-## Run the project
+## Run locally
 
-You need Git and Docker installed. Create a local environment file and set a strong admin password before starting the containers:
+Requirements: Git and Docker.
 
 ```bash
 git clone https://github.com/codewithsayan7/shopsphere-springboot-react.git
@@ -31,49 +28,37 @@ cd shopsphere-springboot-react
 cp .env.example .env
 ```
 
-Edit the `.env` file and replace the example password. Then run:
+Set a private admin password in `.env`, then start the application:
 
 ```bash
 docker compose up --build
 ```
 
-Then open:
+| Service | Local address |
+| --- | --- |
+| Storefront | http://localhost:5174 |
+| API | http://localhost:8081 |
+| Products | http://localhost:8081/api/products |
+| Orders | http://localhost:8081/api/orders |
 
-- Storefront: http://localhost:5174
-- Backend: http://localhost:8081
-- Products API: http://localhost:8081/api/products
-- Orders API: http://localhost:8081/api/orders
+Stop the containers with `docker compose down`.
 
-To stop the containers:
+## Checkout and stock consistency
 
-```bash
-docker compose down
-```
+Checkout runs in a database transaction. The product repository uses a pessimistic write lock when it reads stock for an order, so two concurrent checkouts cannot both reserve the same remaining units. Prices and order totals use `BigDecimal` to avoid floating-point currency calculations.
 
-## Admin access
+## Repository map
 
-Product browsing and demo checkout are public. Product creation, editing, deletion and order viewing require the admin username and password configured in `.env`. The example file is only a starting point; use a strong secret and HTTPS for any hosted environment.
-
-Order totals use `BigDecimal`, and checkout locks product rows while checking and reducing stock to prevent two orders from overselling the same available quantity.
-
-## Project folders
-
-- `backend/` – Spring Boot API and tests
-- `frontend/` – React storefront and admin page
-- `screenshots/` – screenshots
+- `backend/` - Spring Boot application and tests
+- `frontend/` - storefront and admin interface
+- `screenshots/` - application screenshots
 
 ## Screenshots
 
-### Storefront
-
 ![ShopSphere storefront](screenshots/storefront.jpeg)
-
-### Admin page
 
 ![ShopSphere admin](screenshots/admin.jpeg)
 
-This is a learning demo. It does not collect payments or include production-grade identity management, role management or deployment hardening.
+## Maintainer
 
-## Author
-
-Sayan Banerjee – https://github.com/codewithsayan7
+Sayan Banerjee - [GitHub](https://github.com/codewithsayan7)
