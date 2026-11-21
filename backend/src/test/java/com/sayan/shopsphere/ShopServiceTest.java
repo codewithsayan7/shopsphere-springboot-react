@@ -30,8 +30,8 @@ class ShopServiceTest {
     @Test
     void checkoutRejectsAnEmptyCart() {
         Map<String, Object> request = Map.of(
-                "customerName", "Priya Nair",
-                "customerEmail", "priya.nair@example.com",
+                "customerName", "Priya Nair"
+                "customerEmail", "priya.nair@example.com"
                 "items", List.of()
         );
 
@@ -53,8 +53,8 @@ class ShopServiceTest {
     @Test
     void checkoutRejectsAnInvalidEmail() {
         Map<String, Object> request = Map.of(
-                "customerName", "Meera Iyer",
-                "customerEmail", "not-an-email",
+                "customerName", "Meera Iyer"
+                "customerEmail", "not-an-email"
                 "items", List.of(Map.of("productId", 1, "quantity", 1))
         );
 
@@ -74,8 +74,8 @@ class ShopServiceTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Kabir Shah",
-                "customerEmail", "meera.iyer@example.org",
+                "customerName", "Kabir Shah"
+                "customerEmail", "kabir.shah@example.net"
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
@@ -97,8 +97,8 @@ class ShopServiceTest {
         when(productRepository.findByIdForUpdate(7L)).thenReturn(Optional.of(product));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Ananya Roy",
-                "customerEmail", "kabir.shah@example.net",
+                "customerName", "Ananya Roy"
+                "customerEmail", "ananya.roy@example.com"
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
