@@ -1,4 +1,4 @@
-package com.portfolio.shopsphere;
+package com.sayan.shopsphere;
 
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
