@@ -53,7 +53,7 @@ class ShopServiceTest {
     @Test
     void checkoutRejectsAnInvalidEmail() {
         Map<String, Object> request = Map.of(
-                "customerName", "Priya Nair",
+                "customerName", "Meera Iyer",
                 "customerEmail", "not-an-email",
                 "items", List.of(Map.of("productId", 1, "quantity", 1))
         );
@@ -74,8 +74,8 @@ class ShopServiceTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Priya Nair",
-                "customerEmail", "priya.nair@example.com",
+                "customerName", "Kabir Shah",
+                "customerEmail", "meera.iyer@example.org",
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
@@ -97,8 +97,8 @@ class ShopServiceTest {
         when(productRepository.findByIdForUpdate(7L)).thenReturn(Optional.of(product));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Priya Nair",
-                "customerEmail", "priya.nair@example.com",
+                "customerName", "Ananya Roy",
+                "customerEmail", "kabir.shah@example.net",
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
