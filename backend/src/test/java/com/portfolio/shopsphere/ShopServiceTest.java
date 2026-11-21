@@ -1,4 +1,4 @@
-package com.portfolio.shopsphere;
+package com.sayan.shopsphere;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,8 +30,8 @@ class ShopServiceTest {
     @Test
     void checkoutRejectsAnEmptyCart() {
         Map<String, Object> request = Map.of(
-                "customerName", "Alex Doe",
-                "customerEmail", "alex@example.com",
+                "customerName", "Priya Nair",
+                "customerEmail", "priya.nair@example.com",
                 "items", List.of()
         );
 
@@ -53,7 +53,7 @@ class ShopServiceTest {
     @Test
     void checkoutRejectsAnInvalidEmail() {
         Map<String, Object> request = Map.of(
-                "customerName", "Alex Doe",
+                "customerName", "Priya Nair",
                 "customerEmail", "not-an-email",
                 "items", List.of(Map.of("productId", 1, "quantity", 1))
         );
@@ -74,8 +74,8 @@ class ShopServiceTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Alex Doe",
-                "customerEmail", "alex@example.com",
+                "customerName", "Priya Nair",
+                "customerEmail", "priya.nair@example.com",
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
@@ -97,8 +97,8 @@ class ShopServiceTest {
         when(productRepository.findByIdForUpdate(7L)).thenReturn(Optional.of(product));
 
         Map<String, Object> request = Map.of(
-                "customerName", "Alex Doe",
-                "customerEmail", "alex@example.com",
+                "customerName", "Priya Nair",
+                "customerEmail", "priya.nair@example.com",
                 "items", List.of(Map.of("productId", 7, "quantity", 2))
         );
 
