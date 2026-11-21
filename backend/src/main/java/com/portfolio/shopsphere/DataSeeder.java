@@ -1,4 +1,4 @@
-package com.portfolio.shopsphere;
+package com.sayan.shopsphere;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
