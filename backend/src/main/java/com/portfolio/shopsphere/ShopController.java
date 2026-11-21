@@ -1,4 +1,4 @@
-package com.portfolio.shopsphere;
+package com.sayan.shopsphere;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
