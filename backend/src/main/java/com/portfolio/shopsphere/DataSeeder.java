@@ -15,21 +15,21 @@ class DataSeeder {
             if (repository.count() == 0) {
                 repository.save(product(
                         "Everyday Backpack",
-                        "A practical daily backpack with a clean minimal profile.",
+                        "Backpack with a main compartment and front pocket.",
                         "Accessories",
                         "1299.00",
                         20
                 ));
                 repository.save(product(
                         "Ceramic Coffee Mug",
-                        "A sturdy ceramic mug for your daily coffee ritual.",
+                        "Ceramic mug for hot and cold drinks.",
                         "Home",
                         "349.00",
                         35
                 ));
                 repository.save(product(
                         "Desk Organizer",
-                        "Keep your workspace tidy with this compact organizer.",
+                        "Desk organizer with compartments for small supplies.",
                         "Workspace",
                         "599.00",
                         15
